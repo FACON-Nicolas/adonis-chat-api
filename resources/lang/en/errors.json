@@ -2,5 +2,6 @@
   "E_UNAUTHORIZED_ACCESS": "You are not authorized to access this resource",
   "E_INVALID_CREDENTIALS": "The provided credentials are incorrect",
   "E_MESSAGE_NOT_FOUND": "The message was not found",
-  "E_AUTHORIZATION_FAILURE": "You are not authorized to perform this action"
+  "E_AUTHORIZATION_FAILURE": "You are not authorized to perform this action",
+  "E_CONVERSATION_NOT_FOUND": "The conversation was not found"
 }

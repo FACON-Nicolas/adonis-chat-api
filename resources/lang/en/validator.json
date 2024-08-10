@@ -4,7 +4,14 @@
       "email": "Email",
       "password": "Password",
       "passwordConfirmation": "Password Confirmation",
-      "username": "Username"
+      "username": "Username",
+      "content": "Content",
+      "receiverId": "Receiver",
+      "senderId": "Sender",
+      "conversationId": "Conversation",
+      "creatorId": "Creator",
+      "name": "Name",
+      "guestId": "Guest"
     },
     "messages": {
       "required": "{field} is required.",
@@ -14,8 +21,10 @@
       "minLength": "{field} must be at least {min} characters.",
       "confirmed": "{field} does not match.",
       "database.exists": "{field} does not exist.",
-      "sameAs": "{field} must be the same as {otherField}."
+      "sameAs": "{field} must be the same as {otherField}.",
+      "number": "{field} must be a number.",
+      "positive": "{field} must be a positive number.",
+      "withoutDecimals": "{field} must be a whole number."
     }
   }
 }
-

@@ -1,10 +1,15 @@
+import ConversationService from '#services/conversation_service'
 import MessageService from '#services/message_service'
+import socket from '#services/socket_service'
 import { inject } from '@adonisjs/core'
 import type { HttpContext } from '@adonisjs/core/http'
 
 @inject()
 export default class MessagesController {
-  constructor(private readonly messageService: MessageService) {}
+  constructor(
+    private readonly messageService: MessageService,
+    private readonly conversationService: ConversationService
+  ) {}
   /**
    * Display a list of resource
    */
@@ -17,13 +22,18 @@ export default class MessagesController {
   /**
    * Handle form submission for the create action
    */
-  async store({ request, i18n, response }: HttpContext) {
-    const { content, receiverId, senderId } = await this.messageService.validateMessageCreation(
-      request,
-      i18n
-    )
+  async store({ request, i18n, response, bouncer }: HttpContext) {
+    const { content, receiverId, senderId, conversationId } =
+      await this.messageService.validateMessageCreation(request, i18n)
 
-    const message = await this.messageService.createMessage(content, receiverId, senderId)
+    const conversation = await this.conversationService.findConversationByIdOrFail(conversationId)
+
+    bouncer.with('ConversationPolicy').authorize('show', conversation)
+    const message = await this.messageService.createMessage(
+      { content, receiverId, senderId },
+      conversation
+    )
+    socket.io.to('room:' + conversationId).emit('message:created', message.serialize())
     return response.created(message.serialize())
   }
 
@@ -43,6 +53,7 @@ export default class MessagesController {
     const message = await this.messageService.findMessageByIdOrFail(params.id)
     await bouncer.with('MessagePolicy').authorize('update', message)
 
+    socket.io.to('room:' + message.conversationId).emit('message:updated', message.serialize())
     const newMessage = await this.messageService.updateMessage(message, request, i18n)
     return response.ok(newMessage.serialize())
   }
@@ -53,6 +64,7 @@ export default class MessagesController {
   async destroy({ params, response, bouncer }: HttpContext) {
     const message = await this.messageService.findMessageByIdOrFail(params.id)
     await bouncer.with('MessagePolicy').authorize('delete', message)
+    socket.io.to('room:' + message.conversationId).emit('message:deleted', message.serialize())
 
     await message.delete()
     return response.noContent()
