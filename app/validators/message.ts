@@ -17,6 +17,11 @@ export const createMessageValidator = vine.compile(
     content: vine.string().trim(),
     receiverId: userRule(vine),
     senderId: userRule(vine),
+    conversationId: vine
+      .number()
+      .positive()
+      .withoutDecimals()
+      .exists(async (db, value) => !!(await db.from('conversations').where('id', value))),
   })
 )
 

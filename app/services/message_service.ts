@@ -1,9 +1,12 @@
 import MessageNotFoundException from '#exceptions/message_not_found_exception'
+import Conversation from '#models/conversation'
 import Message from '#models/message'
 import User from '#models/user'
 import { createMessageValidator, updateMessageValidator } from '#validators/message'
 import { RequestValidator } from '@adonisjs/core/http'
 import { I18n } from '@adonisjs/i18n'
+
+type IConversationInput = { content: string; receiverId: number; senderId: number }
 
 export default class MessageService {
   async findAllMessagesFromUser(user: User) {
@@ -43,8 +46,11 @@ export default class MessageService {
     return await message.merge(await this.validateMessageUpdate(request, i18n)).save()
   }
 
-  async createMessage(content: string, receiverId: number, senderId: number) {
-    return await Message.create({
+  async createMessage(
+    { content, receiverId, senderId }: IConversationInput,
+    conversation: Conversation
+  ) {
+    return await conversation.related('messages').create({
       content,
       receiverId,
       senderId,

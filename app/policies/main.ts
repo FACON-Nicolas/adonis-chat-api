@@ -13,5 +13,6 @@
 */
 
 export const policies = {
+  ConversationPolicy: () => import('#policies/conversation_policy'),
   MessagePolicy: () => import('#policies/message_policy')
 }

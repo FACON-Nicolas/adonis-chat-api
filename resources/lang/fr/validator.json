@@ -4,7 +4,14 @@
       "email": "Email",
       "password": "Mot de passe",
       "passwordConfirmation": "Confirmation du mot de passe",
-      "username": "Nom d'utilisateur"
+      "username": "Nom d'utilisateur",
+      "content": "Contenu",
+      "receiverId": "Destinataire",
+      "senderId": "Expéditeur",
+      "conversationId": "Conversation",
+      "creatorId": "Créateur",
+      "name": "Nom",
+      "guestId": "Invité"
     },
     "messages": {
       "required": "{field} est requis.",
@@ -14,7 +21,10 @@
       "minLength": "{field} doit contenir au moins {min} caractères.",
       "confirmed": "{field} ne correspond pas.",
       "database.exists": "{field} n'existe pas.",
-      "sameAs": "{field} doit être identique à {otherField}."
+      "sameAs": "{field} doit être identique à {otherField}.",
+      "number": "{field} doit être un nombre.",
+      "positive": "{field} doit être un nombre positif.",
+      "withoutDecimals": "{field} doit être un nombre entier."
     }
   }
 }

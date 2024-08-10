@@ -11,6 +11,7 @@ import router from '@adonisjs/core/services/router'
 import { middleware } from '#start/kernel'
 const SessionController = () => import('#controllers/session_controller')
 const MessagesController = () => import('#controllers/messages_controller')
+const ConversationsController = () => import('#controllers/conversations_controller')
 
 router.get('/', async () => {
   return {
@@ -24,6 +25,7 @@ router
   .group(() => {
     router.get('/me', [SessionController, 'getProfile'])
     router.resource('messages', MessagesController).apiOnly()
+    router.resource('conversations', ConversationsController).apiOnly()
   })
   .use(
     middleware.auth({
